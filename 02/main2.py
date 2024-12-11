@@ -24,18 +24,21 @@ def is_safe_report_with_tolerance(report):
         if is_safe_report(new_report):
             return True
 
+    
     return False
 
 
 def main():
 
-    data = read_input("./input.txt")
+    data = read_input("./input.yannick")
     lines = [ line for line in data.split(NEW_LINE) if line.strip()]
     result = 0
 
-    for line in lines:
+    for i, line in enumerate(lines):
         report = [int(e) for e in line.split(" ")]
         result =  result +1 if is_safe_report_with_tolerance(report) else result
+        if is_safe_report_with_tolerance(report):
+            print(i,line)
 
     print(result)
 

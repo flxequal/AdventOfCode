@@ -22,7 +22,6 @@ def main():
 
 # --- common helper functions ---
 
-<<<<<<< HEAD
 
 def val_positions_in_grid (val, grid):
 
@@ -34,8 +33,6 @@ def val_positions_in_grid (val, grid):
                 res.append((i,j))
     return res
 
-=======
->>>>>>> 97241bb (initial commit)
 def read_input(file_name):
     with open (file_name,"r") as fp:
         data = fp.read()
