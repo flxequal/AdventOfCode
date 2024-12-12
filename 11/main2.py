@@ -46,11 +46,19 @@ def main():
     res = 0
     line = [c for c in lines[0].split(" ")]
 
+    times = []
+
     for c in line:
+
+
+        t = time.time()
         res += blink(int(c), iterations)
+        times.append(time.time()-t)
 
     print(time.time()-start)
     print(res)
+
+    print(NEW_LINE.join(str(t) for t in times))
 
 # --- common helper functions ---
 
