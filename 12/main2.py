@@ -1,4 +1,5 @@
 
+import copy
 import random
 
 NEW_LINE = "\n"
@@ -23,6 +24,15 @@ MIIIIIJJEE
 MIIISIJEEE
 MMMISSJEEE
 """
+
+# SAMPLE="""
+# AAAAAA
+# AAABBA
+# AAABBA
+# ABBAAA
+# ABBAAA
+# AAAAAA
+# """
 
 def find_area(i,j, grid):
     value = grid[i][j]
@@ -79,14 +89,12 @@ def calc_fence(area):
     
 def calc_lines(area, grid, horz=True):
 
+
     i_min = min(a[0] for a in area)
     j_min = min(a[1] for a in area)
 
     i_max = max(a[0] for a in area)
     j_max = max(a[1] for a in area)
-
-    # print("i range",i_min,i_max)
-    # print("j range",j_min,j_max)
 
     grid_i_max= len(grid)
     grid_j_max= len(grid[0])
@@ -108,31 +116,59 @@ def calc_lines(area, grid, horz=True):
 
     edges = 0
 
+    previous_edge_dir = None
+    edge_dir = None
 
-    for i in range(i_min,i_max+2):
+
+    for i in range(i_min-2,i_max+2):
         in_edge = False
-        for j in range(j_min,j_max+2):
-            # if horz :
+        previous_direction=[]
+        for j in range(j_min-2,j_max+2):
             upper_present = in_bound(i-1,j) and (get_value(i-1,j) == v)
             lower_present = in_bound(i,j) and (get_value(i,j) == v)
-            # else:
-            #     upper_present = in_bound(j-1,i) and (get_value(i,j-1) == v)
-            #     lower_present = in_bound(j-1,i) and (get_value(i,j) == v)
             edge_detected = upper_present != lower_present
 
-            if in_edge and edge_detected:
-                continue
+
+            direction = [upper_present, lower_present]
+
+
+            if i==3:
+                print(direction,previous_direction)
+            if edge_detected:
+                if i==3:
+                    pass
+                    
+                    # print(j,direction,previous_direction)
+
+            if direction != previous_direction:
+                # print("DETECTED_EDGE_FLIP")
+                edge_flipped = True 
+            else:
+                edge_flipped = False
+                
+            if i==3:
+                if edge_flipped:
+                    print("EDGE_FLIPPED AT ",i,j)
+                # print(edge_dir, previous_edge_dir,edge_flipped)
+            
+            if in_edge and edge_detected and edge_flipped:
+                print("!!!!!edge flipped")
+                edges += 1
+                # continue
             elif (not in_edge) and edge_detected:
-                # print("edge start",i,j)
+                print("edge start",i,j)
                 edges += 1
                 in_edge = True
-            elif in_edge and not edge_detected:
-                # print("edge end",i,j)
+            elif in_edge and (not edge_detected):
+                print("edge end",i,j)
                 in_edge = False
+
+            previous_direction = copy.copy(direction)
+
+
         if in_edge:
             edges += 1
-            # print("edge end",i,j)
-
+            print("edge end",i,j)
 
     return  edges
 
@@ -145,18 +181,8 @@ def calc_lines(area, grid, horz=True):
 
 def main():
 
-    # --- read data
-    # data = read_input(INPUT_FILE)
     lines = read_input_as_lines(INPUT_FILE)
-
-    # --- sample data 
-    # data = SAMPLE
-    # lines = input_to_lines(SAMPLE)
-
     grid = set()
-
-
-    print_area  = []
 
     res = 0 
 
@@ -189,8 +215,10 @@ def main():
         areas[v] = ars
 
 
+    res=0
+
     for k,v in areas.items():
-        # if k != "C":
+        # if k != "A":
             # continue
         for a in v:
             # print(a)

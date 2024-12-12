@@ -11,9 +11,6 @@ def rand_color_printer():
     return foo
 
 
-
-
-
 SAMPLE="""
 RRRRIICCFF
 RRRRIICCCF
