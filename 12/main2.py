@@ -85,8 +85,8 @@ def calc_lines(area, grid, horz=True):
     i_max = max(a[0] for a in area)
     j_max = max(a[1] for a in area)
 
-    print("i range",i_min,i_max)
-    print("j range",j_min,j_max)
+    # print("i range",i_min,i_max)
+    # print("j range",j_min,j_max)
 
     grid_i_max= len(grid)
     grid_j_max= len(grid[0])
@@ -102,21 +102,19 @@ def calc_lines(area, grid, horz=True):
         return i_in and j_in
 
     def get_value(i,j):
-        return grid[i][j]
+        if(i,j)in area:
+            return grid[i][j]
+        return None
+
     edges = 0
 
-    i_range = [i for i in range(i_min,i_max+2)]
-    j_range = [j for j in range(j_min,j_max+2)]
 
-    if not horz :
-        i_range, j_range = j_range , i_range
-
-    for i in i_range:
+    for i in range(i_min,i_max+2):
         in_edge = False
-        for j in j_range:
-            if horz :
-                upper_present = in_bound(i,j-1) and (get_value(i,j-1) == v)
-                lower_present = in_bound(i,j) and (get_value(i,j) == v)
+        for j in range(j_min,j_max+2):
+            # if horz :
+            upper_present = in_bound(i-1,j) and (get_value(i-1,j) == v)
+            lower_present = in_bound(i,j) and (get_value(i,j) == v)
             # else:
             #     upper_present = in_bound(j-1,i) and (get_value(i,j-1) == v)
             #     lower_present = in_bound(j-1,i) and (get_value(i,j) == v)
@@ -125,15 +123,15 @@ def calc_lines(area, grid, horz=True):
             if in_edge and edge_detected:
                 continue
             elif (not in_edge) and edge_detected:
-                print("edge start",i,j)
+                # print("edge start",i,j)
                 edges += 1
                 in_edge = True
             elif in_edge and not edge_detected:
-                print("edge end",i,j)
+                # print("edge end",i,j)
                 in_edge = False
         if in_edge:
             edges += 1
-            print("edge end",i,j)
+            # print("edge end",i,j)
 
 
     return  edges
@@ -152,8 +150,8 @@ def main():
     lines = read_input_as_lines(INPUT_FILE)
 
     # --- sample data 
-    data = SAMPLE
-    lines = input_to_lines(SAMPLE)
+    # data = SAMPLE
+    # lines = input_to_lines(SAMPLE)
 
     grid = set()
 
@@ -192,10 +190,14 @@ def main():
 
 
     for k,v in areas.items():
-        if k != "R":
-            continue
+        # if k != "C":
+            # continue
         for a in v:
-            res =calc_lines(a,lines,False)
+            # print(a)
+            r =calc_lines(a,lines,False)
+            rr = r *2 * len(a)
+            res += rr
+            print(k,len(a),2*r, rr)
             # res = calc_lines
             # fence = calc_fence(a)
             # length_fence = len(fence)
