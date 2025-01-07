@@ -1,4 +1,5 @@
-
+import re
+from collections import namedtuple
 
 NEW_LINE = "\n"
 INPUT_FILE = "input.txt"
